@@ -5,6 +5,11 @@ from tkinter import ttk
 from tkinter.scrolledtext import *
 import tkinter.filedialog
 
+# Web Scraping Pkg
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+
+
 #GUI window setup
 root= Tk()
 root.title("TEXT SUMMARYZER")
@@ -104,13 +109,28 @@ tab2_display_text.grid(row=7,column=0, columnspan=3,padx=5,pady=5)
 
 ################################################## URL BASED SUMMARIZER#################################################
 
+##Function for urlbased summarizer
+def clear_text_url():
+    displayed_text.delete('1.0',END)
+
+def clear_textbox3():
+    tab3_display_text.delete('1.0', END)
+
+def webscraper():
+    rtext = str(text_u.get())
+    page = urlopen(rtext)
+    soup = BeautifulSoup(page)
+    fetched_text = ' '.join(map(lambda p:p.text,soup.find_all('p')))
+    displayed_text.insert(tk.END,fetched_text)
+
+
 label_u= Label(tab3, text="Enter the url : ",pady=3)
 label_u.place(x=50,y=40)
 
 raw_ip=StringVar()
 text_u=Entry(tab3,textvariable=raw_ip,font = ('calibre',10,'normal'),width=60)
 text_u.place(x=150,y=40)
-burl=Button(tab3,text="Get Text", width=12,bg='#0A0823',fg='#FEFEFE')
+burl=Button(tab3,text="Get Text", command=webscraper, width=12,bg='#0A0823',fg='#FEFEFE')
 burl.place(x=600,y=35)
 
 #Text from url
@@ -118,7 +138,7 @@ displayed_text = ScrolledText(tab3,height=15,width=95)
 displayed_text.place(x=5,y=70)
 
 #Buttons
-button1_URL=Button(tab3,text="Reset", width=12,bg='#03A9F4',fg='#000')
+button1_URL=Button(tab3,text="Reset",command=lambda: [clear_textbox3(),clear_text_url()], width=12,bg='#03A9F4',fg='#000')
 button1_URL.place(x=270,y=330)
 
 button2_URL=Button(tab3,text="Summarize",width=12,bg='#ced',fg='#000')
