@@ -9,6 +9,8 @@ import tkinter.filedialog
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
+#Text Summarizer
+from spacy_summarizer_code import text_summarizer
 
 #GUI window setup
 root= Tk()
@@ -150,6 +152,13 @@ tab3_display_text.place(x=5,y=370)
 
 
 ################################################## COMPARING SUMMARIZER#################################################
+##Function for urlbased summarizer
+def clear_text_cmp():
+    entry_cmp.delete('1.0',END)
+
+def clear_textbox4():
+    tab1_display_cmp.delete('1.0', END)
+
 
 label_cmp=Label(tab4, text='ENTER THE TEXT', pady=5)
 label_cmp.place(x=359,y=40)
@@ -157,7 +166,7 @@ entry_cmp=ScrolledText(tab4,height=13, width=93, padx=6, pady=5,state='normal')
 entry_cmp.place(x=10,y=75)
 
 #Buttons
-button1_cmp=Button(tab4,text="Reset", width=12,bg='#FAA601',fg='#FFFECF')
+button1_cmp=Button(tab4,text="Reset",command=lambda: [clear_textbox4(),clear_text_cmp()], width=12,bg='#FAA601',fg='#FFFECF')
 button1_cmp.place(x=50,y=310)
 
 button2_cmp=Button(tab4,text="NLTK Summarizer",width=20,bg='#7A01FA',fg='#FFFECF')
@@ -167,7 +176,8 @@ button3_cmp=Button(tab4,text="SpaCy Summarizer",width=20,bg='#FA0101',fg='#FFFEC
 button3_cmp.place(x=600,y=310)
 
 #Summary TextBox
-tab1_display_cmp = Text(tab4,height=19, width=95).place(x=10, y=350)
+tab1_display_cmp = Text(tab4,height=19, width=95)
+tab1_display_cmp.place(x=10, y=350)
 
 
 root.mainloop()
