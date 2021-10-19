@@ -9,8 +9,12 @@ import tkinter.filedialog
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
+#Count code
+from count import count_words
+
 #Text Summarizer
-from spacy_summarizer_code import text_summarizer
+from spacy_summarizer_code import spacy_summarizer
+from nltk_summarizer_code import nltk_summarizer
 
 #GUI window setup
 root= Tk()
@@ -57,8 +61,14 @@ def clear_text_main():
 def clear_textbox():
     tab1_display.delete('1.0', END)
 
-#def basic_summarizer():
-
+def main_summarizer():
+    r_text= str(entry.get('1.0',tk.END))
+    initial_cnt= str(count_words(r_text))
+    final_t= spacy_summarizer(r_text)
+    result_text='\nSUMMARY:\t{}'.format(final_t)
+    cnt=str(count_words(result_text))
+    result_text+='\n\nORIGINAL WORD COUNT: {}'.format(initial_cnt)+'\n\nSUMMARIZER WORD COUNT: {}'.format(cnt)
+    tab1_display.insert(tk.END,result_text)
 
 
 label_m=Label(tab1, text='ENTER THE TEXT', pady=5)
@@ -74,7 +84,7 @@ tab1_display.place(x=10, y=350)
 button1=Button(tab1,text="Reset",command=lambda: [clear_textbox(),clear_text_main()], width=12,bg='#03A9F4',fg='#000')
 button1.place(x=270,y=310)
 
-button2=Button(tab1,text="Summarize",width=12,bg='#ced',fg='#000')
+button2=Button(tab1,text="Summarize",command=main_summarizer, width=12,bg='#ced',fg='#000')
 button2.place(x=450,y=310)
 
 
@@ -92,6 +102,15 @@ def open_files():
 	read_text = open(file1).read()
 	displayed_file.insert(tk.END,read_text)
 
+def file_summarizer():
+    r_text= str(displayed_file.get('1.0',tk.END))
+    initial_cnt= str(count_words(r_text))
+    final_t= nltk_summarizer(r_text)
+    result_text='\nSUMMARY:\t{}'.format(final_t)
+    cnt=str(count_words(result_text))
+    result_text+='\n\nORIGINAL WORD COUNT: {}'.format(initial_cnt)+'\n\nSUMMARIZER WORD COUNT: {}'.format(cnt)
+    tab2_display_text.insert(tk.END,result_text)
+
 
 displayed_file = ScrolledText(tab2,height=15,width=93)
 displayed_file.grid(row=2,column=0, columnspan=3,padx=5,pady=3)
@@ -102,7 +121,7 @@ b0.grid(row=3,column=0,padx=10,pady=10)
 b1=Button(tab2,text="Reset",command=lambda: [clear_textbox2(),clear_text_file()], width=12,bg="#b9f6ca")
 b1.grid(row=3,column=1,padx=10,pady=10)
 
-b2=Button(tab2,text="Summarize", width=12,bg='#F5EABA',fg='#000')
+b2=Button(tab2,text="Summarize",command=file_summarizer, width=12,bg='#F5EABA',fg='#000')
 b2.grid(row=3,column=2,padx=10,pady=10)
 
 tab2_display_text = ScrolledText(tab2,height=20,width=93)
@@ -121,10 +140,18 @@ def clear_textbox3():
 def webscraper():
     rtext = str(text_u.get())
     page = urlopen(rtext)
-    soup = BeautifulSoup(page)
+    soup = BeautifulSoup(page,features="html.parser")
     fetched_text = ' '.join(map(lambda p:p.text,soup.find_all('p')))
     displayed_text.insert(tk.END,fetched_text)
 
+def url_summarizer():
+    r_text= str(displayed_text.get('1.0',tk.END))
+    initial_cnt= str(count_words(r_text))
+    final_t= nltk_summarizer(r_text)
+    result_text='\nSUMMARY:\t{}'.format(final_t)
+    cnt=str(count_words(result_text))
+    result_text+='\n\nORIGINAL WORD COUNT: {}'.format(initial_cnt)+'\n\nSUMMARIZER WORD COUNT: {}'.format(cnt)
+    tab3_display_text.insert(tk.END,result_text)
 
 label_u= Label(tab3, text="Enter the url : ",pady=3)
 label_u.place(x=50,y=40)
@@ -143,7 +170,7 @@ displayed_text.place(x=5,y=70)
 button1_URL=Button(tab3,text="Reset",command=lambda: [clear_textbox3(),clear_text_url()], width=12,bg='#03A9F4',fg='#000')
 button1_URL.place(x=270,y=330)
 
-button2_URL=Button(tab3,text="Summarize",width=12,bg='#ced',fg='#000')
+button2_URL=Button(tab3,text="Summarize",command=url_summarizer,width=12,bg='#ced',fg='#000')
 button2_URL.place(x=450,y=330)
 
 #Displaying the result
@@ -159,6 +186,27 @@ def clear_text_cmp():
 def clear_textbox4():
     tab1_display_cmp.delete('1.0', END)
 
+def clear_textbox5():
+    tab2_display_cmp.delete('1.0',END)
+
+def spacyb_summarizer():
+    r_text= str(entry_cmp.get('1.0',tk.END))
+    initial_cnt= str(count_words(r_text))
+    final_t= spacy_summarizer(r_text)
+    result_text='\nSPACY SUMMARY:\t{}'.format(final_t)
+    cnt=str(count_words(result_text))
+    result_text+='\n\nORIGINAL WORD COUNT: {}'.format(initial_cnt)+'\n\nSUMMARIZER WORD COUNT: {}'.format(cnt)
+    tab2_display_cmp.insert(tk.END,result_text)
+
+def nltkb_summarizer():
+    r_text= str(entry_cmp.get('1.0',tk.END))
+    initial_cnt= str(count_words(r_text))
+    final_t= nltk_summarizer(r_text)
+    result_text='\nNLTK SUMMARY:\t{}'.format(final_t)
+    cnt=str(count_words(result_text))
+    result_text+='\n\nORIGINAL WORD COUNT: {}'.format(initial_cnt)+'\n\nSUMMARIZER WORD COUNT: {}'.format(cnt)
+    tab1_display_cmp.insert(tk.END,result_text)
+
 
 label_cmp=Label(tab4, text='ENTER THE TEXT', pady=5)
 label_cmp.place(x=359,y=40)
@@ -166,18 +214,21 @@ entry_cmp=ScrolledText(tab4,height=13, width=93, padx=6, pady=5,state='normal')
 entry_cmp.place(x=10,y=75)
 
 #Buttons
-button1_cmp=Button(tab4,text="Reset",command=lambda: [clear_textbox4(),clear_text_cmp()], width=12,bg='#FAA601',fg='#FFFECF')
+button1_cmp=Button(tab4,text="Reset",command=lambda: [clear_textbox4(),clear_textbox5(),clear_text_cmp()], width=12,bg='#FAA601',fg='#FFFECF')
 button1_cmp.place(x=50,y=310)
 
-button2_cmp=Button(tab4,text="NLTK Summarizer",width=20,bg='#7A01FA',fg='#FFFECF')
+button2_cmp=Button(tab4,text="NLTK Summarizer", command=nltkb_summarizer , width=20,bg='#7A01FA',fg='#FFFECF')
 button2_cmp.place(x=310,y=310)
 
-button3_cmp=Button(tab4,text="SpaCy Summarizer",width=20,bg='#FA0101',fg='#FFFECF')
+button3_cmp=Button(tab4,text="SpaCy Summarizer", command=spacyb_summarizer ,width=20,bg='#FA0101',fg='#FFFECF')
 button3_cmp.place(x=600,y=310)
 
 #Summary TextBox
-tab1_display_cmp = Text(tab4,height=19, width=95)
+tab1_display_cmp = Text(tab4,height=19, width=47)
 tab1_display_cmp.place(x=10, y=350)
+
+tab2_display_cmp = Text(tab4,height=19, width=47)
+tab2_display_cmp.place(x=400, y=350)
 
 
 root.mainloop()

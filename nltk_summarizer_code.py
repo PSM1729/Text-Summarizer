@@ -48,3 +48,8 @@ def nltk_summarizer(initial_text):
 
 
 
+
+'''nltk_summarizer("The first Harmandir Sahib was built in 1604 by Arjan, the fifth Sikh Guru, who symbolically had it placed on a lower level so that even the humblest had to step down to enter it. He also included entrances on all four sides, signifying that it was open to worshippers of all castes and creeds. The foundation stone was laid by Mian Mīr, a Muslim divine of Lahore (now in Pakistan). The temple was destroyed several times by Afghan invaders and was finally rebuilt in marble and copper overlaid with gold foil during the reign (1801–39) of Maharaja Ranjit Singh. The structure thus became known as the Golden Temple.")'''
+
+
+
